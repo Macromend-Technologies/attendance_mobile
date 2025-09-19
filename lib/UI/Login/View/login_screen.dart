@@ -12,6 +12,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isHide = true;
+  TextEditingController mailCtrl = TextEditingController();
+  TextEditingController pwdCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       children: [
         TextFormField(
+          controller: mailCtrl,
           decoration: textDecorator(
               prefixIcon: Padding(
                 padding: const EdgeInsets.only(right: 10.0, left: 10.0),
@@ -120,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 20.0,
         ),
         TextFormField(
+          controller: pwdCtrl,
           obscureText: isHide,
           style: TextStyle(
               fontWeight: FontWeight.w700, fontSize: 20.0, letterSpacing: 5.0),
