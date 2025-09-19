@@ -11,6 +11,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
+  void initState() {
+    startNavigate();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
@@ -28,6 +34,20 @@ class _SplashScreenState extends State<SplashScreen> {
           scale: 8.0,
         ),
       ),
+    );
+  }
+
+  startNavigate() async {
+    return Timer(
+      Duration(seconds: 3),
+      navigatePage,
+    );
+  }
+
+  void navigatePage() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      "/LoginScreen",
+      (route) => true,
     );
   }
 }
