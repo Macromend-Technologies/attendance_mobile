@@ -1,5 +1,6 @@
 import 'package:macro_attendance_app/Constant/app_strings.dart';
 import 'package:macro_attendance_app/Core/application_base.dart';
+import 'package:macro_attendance_app/UI/Dashboard/View/dashboard_screen.dart';
 import 'package:macro_attendance_app/UI/Login/View/login_screen.dart';
 import 'package:macro_attendance_app/UI/Splash/View/splash_screen.dart';
 
@@ -16,7 +17,7 @@ class ApplicationCore extends AppBase {
     routes = {
       '/': (context) => const SplashScreen(),
       '/LoginScreen': (context) => const LoginScreen(),
-      // '/Dashboard': (context) => const DashboardScreen(),
+      '/Dashboard': (context) => const DashboardScreen(),
     };
     // locator.registerFactory(() => SplashViewModel());
     // locator.registerFactory(() => DashboardViewModel());

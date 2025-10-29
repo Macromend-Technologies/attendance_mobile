@@ -11,7 +11,7 @@ InputDecoration textDecorator(
         fontWeight: FontWeight.w500,
         letterSpacing: 0.0),
     counterText: "",
-    contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 18.0),
+    contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
     prefixIcon: prefixIcon,
     suffixIcon: suffixIcon,
     border: OutlineInputBorder(
