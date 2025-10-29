@@ -18,6 +18,8 @@ class AppColor extends Color {
   static AppColor greyColor = AppColor._("#CCCCCC");
   static AppColor disableColor = AppColor._("#d1d5db");
   static AppColor hintColor = AppColor._("#32363b");
+  static AppColor lightGreenColor = AppColor._("#eaf7f0");
   static AppColor backgroundColor = AppColor._("#f9fafb");
   static AppColor redColor = AppColor._("#d26053");
+  static AppColor shadowColor = AppColor._("#dedee2");
 }
