@@ -21,5 +21,7 @@ class AppColor extends Color {
   static AppColor lightGreenColor = AppColor._("#eaf7f0");
   static AppColor backgroundColor = AppColor._("#f9fafb");
   static AppColor redColor = AppColor._("#d26053");
+  static AppColor errorColor = AppColor._("#FF0000");
+  static AppColor errorBackColor = AppColor._("#F4B6B6");
   static AppColor shadowColor = AppColor._("#dedee2");
 }
