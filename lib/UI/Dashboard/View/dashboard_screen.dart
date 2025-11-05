@@ -1,5 +1,7 @@
 import 'package:macro_attendance_app/Constant/app_color.dart';
 import 'package:macro_attendance_app/Core/application_base.dart';
+import 'package:macro_attendance_app/UI/Leave/View/leave_list_screen.dart';
+import 'package:macro_attendance_app/UI/Permission/View/permission_list_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -89,127 +91,147 @@ class _DashboardScreenState extends State<DashboardScreen> {
             SizedBox(
               height: 15.0,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(color: AppColor.disableColor),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        color: AppColor.shadowColor, shape: BoxShape.circle),
-                    child: Image.asset(
-                      "assets/images/leave_icon.png",
-                      height: 30.0,
-                      width: 30.0,
+            InkResponse(
+              radius: 5.0,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => LeaveListScreen(),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  border: Border.all(color: AppColor.disableColor),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                          color: AppColor.shadowColor, shape: BoxShape.circle),
+                      child: Image.asset(
+                        "assets/images/leave_icon.png",
+                        height: 30.0,
+                        width: 30.0,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 15.0,
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Leaves",
-                                style: TextStyle(
-                                    color: AppColor.blackColor,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18.0),
-                              ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              Text(
-                                "Manage leaves and request",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                            ],
+                    SizedBox(
+                      width: 15.0,
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Leaves",
+                                  style: TextStyle(
+                                      color: AppColor.blackColor,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18.0),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                  "Manage leaves and request",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Icon(Icons.arrow_forward_ios_rounded)
-                      ],
-                    ),
-                  )
-                ],
+                          Icon(Icons.arrow_forward_ios_rounded)
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             SizedBox(
               height: 15.0,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(color: AppColor.disableColor),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        color: AppColor.shadowColor, shape: BoxShape.circle),
-                    child: Image.asset(
-                      "assets/images/permission_icon.png",
-                      height: 30.0,
-                      width: 30.0,
+            InkResponse(
+              radius: 5.0,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PermissionListScreen(),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  border: Border.all(color: AppColor.disableColor),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                          color: AppColor.shadowColor, shape: BoxShape.circle),
+                      child: Image.asset(
+                        "assets/images/permission_icon.png",
+                        height: 30.0,
+                        width: 30.0,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 15.0,
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Permission",
-                                style: TextStyle(
-                                    color: AppColor.blackColor,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18.0),
-                              ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              Text(
-                                "Manage permission and request",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                            ],
+                    SizedBox(
+                      width: 15.0,
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Permission",
+                                  style: TextStyle(
+                                      color: AppColor.blackColor,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18.0),
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                  "Manage permission and request",
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Icon(Icons.arrow_forward_ios_rounded)
-                      ],
-                    ),
-                  )
-                ],
+                          Icon(Icons.arrow_forward_ios_rounded)
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
             SizedBox(
               height: 15.0,
             ),
-            Container(
+            /*Container(
               padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
@@ -265,7 +287,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   )
                 ],
               ),
-            )
+            )*/
           ],
         ),
       ),
