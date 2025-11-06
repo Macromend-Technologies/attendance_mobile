@@ -3,6 +3,7 @@ class AppStrings {
 
 // Preference Keys
   static const isLogin = "isLogin";
+  static const userUid = 'userUid';
 
 // Api URLs
 }

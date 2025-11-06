@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "532778887749",
+    "project_id": "attendance-96bc0",
+    "storage_bucket": "attendance-96bc0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532778887749:android:ce586fff1f03ccb91c512c",
+        "android_client_info": {
+          "package_name": "com.macromend.macro_attendance_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6qCU_OlNrQbhLBS2KzAqVn583bMLK1h4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

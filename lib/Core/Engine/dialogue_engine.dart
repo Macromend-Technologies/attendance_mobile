@@ -27,7 +27,9 @@ class DialogueEngine {
                 SizedBox(
                   width: 15.0,
                 ),
-                Text(AppStrings.appName),
+                Text(
+                  AppStrings.appName,
+                ),
                 SizedBox(
                   width: 15.0,
                 ),
@@ -41,7 +43,10 @@ class DialogueEngine {
             const SizedBox(
               height: 15.0,
             ),
-            Text(msg ?? "")
+            Text(
+              msg ?? "",
+              textAlign: TextAlign.center,
+            )
           ],
         ),
         actions: <Widget>[
