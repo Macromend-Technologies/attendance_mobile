@@ -1,8 +1,9 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:macro_attendance_app/Firebase/Model/secure_code_response_model.dart';
+import '../../Core/application_base.dart';
 
 class FirebaseDatabaseFunction {
   FirebaseFirestore? fireStore;
@@ -53,8 +54,6 @@ class FirebaseDatabaseFunction {
       } else {
         throw "This mail is already registered...";
       }
-    } on FirebaseAuthException catch (e) {
-      throw e.message.toString();
     } catch (e) {
       throw e.toString();
     }
@@ -83,7 +82,7 @@ class FirebaseDatabaseFunction {
       DatabaseReference db = firebaseDatabase!.ref('SecureCodes/$uid');
       DataSnapshot snapshot = await db.get();
       Random random = Random();
-      int code = 1000 + random.nextInt(900000);
+      int code = 1000 + random.nextInt(9000);
       if (!snapshot.exists) {
         await db.update({
           'code': code,
@@ -98,10 +97,30 @@ class FirebaseDatabaseFunction {
         });
       }
       return "code generated to the login staff.";
-    } on FirebaseAuthException catch (e) {
-      throw e.message.toString();
     } catch (e) {
       throw e.toString();
     }
+  }
+
+  Future<bool> verifySecureCode(
+      {required String uid, required int code}) async {
+    bool result = false;
+    try {
+      firebaseDatabase = FirebaseDatabase.instance;
+      DatabaseReference db = firebaseDatabase!.ref('SecureCodes/$uid');
+      DataSnapshot snapshot = await db.get();
+      if (snapshot.exists) {
+        Map<String, dynamic> data =
+            Map<String, dynamic>.from(snapshot.value as Map);
+        SecureCodeResponseModel entity = SecureCodeResponseModel.fromJson(data);
+        if (entity.code == code && entity.isDelete == false) {
+          await db.update({'is_delete': true});
+          result = true;
+        }
+      }
+    } catch (e) {
+      throw e.toString();
+    }
+    return result;
   }
 }

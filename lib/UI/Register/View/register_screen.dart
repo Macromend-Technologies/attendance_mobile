@@ -134,6 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         children: [
           TextFormField(
             controller: nameCtrl,
+            enabled: model!.state != ViewState.inActive,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Name is required";
@@ -156,6 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           TextFormField(
             controller: mailCtrl,
+            enabled: model!.state != ViewState.inActive,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Mail is required";
@@ -178,6 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           TextFormField(
             controller: phoneCtrl,
+            enabled: model!.state != ViewState.inActive,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             maxLines: 1,
             maxLength: 10,
@@ -197,6 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           TextFormField(
             controller: pwdCtrl,
+            enabled: model!.state != ViewState.inActive,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Password is required";
@@ -239,6 +243,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           TextFormField(
             controller: cPwdCtrl,
+            enabled: model!.state != ViewState.inActive,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Confirm password is required";
@@ -281,29 +286,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
           SizedBox(
             height: 25.0,
           ),
-          InkResponse(
-            radius: 5.0,
-            onTap: () {
-              FocusScope.of(context).unfocus();
-              validateInputs();
-            },
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              decoration: BoxDecoration(
-                color: AppColor.primaryColor,
-                borderRadius: BorderRadius.circular(35.0),
-              ),
-              child: Text(
-                "Sign Up",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18.0,
-                    color: AppColor.whiteColor),
-              ),
-            ),
-          ),
+          model!.state == ViewState.inActive
+              ? CircularProgressIndicator()
+              : InkResponse(
+                  radius: 5.0,
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    validateInputs();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 20.0),
+                    decoration: BoxDecoration(
+                      color: AppColor.primaryColor,
+                      borderRadius: BorderRadius.circular(35.0),
+                    ),
+                    child: Text(
+                      "Sign Up",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18.0,
+                          color: AppColor.whiteColor),
+                    ),
+                  ),
+                ),
         ],
       ),
     );

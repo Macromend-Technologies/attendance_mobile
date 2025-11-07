@@ -1,5 +1,6 @@
 import 'package:macro_attendance_app/Constant/app_color.dart';
 import 'package:macro_attendance_app/Core/application_base.dart';
+import 'package:macro_attendance_app/UI/Dashboard/ViewModel/dashboard_view_model.dart';
 import 'package:macro_attendance_app/UI/Leave/View/leave_list_screen.dart';
 import 'package:macro_attendance_app/UI/Permission/View/permission_list_screen.dart';
 
@@ -11,227 +12,239 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  DashboardViewModel? model;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppColor.backgroundColor,
-        elevation: 0.0,
-        automaticallyImplyLeading: false,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Hi, varun",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 20.0,
-                  color: AppColor.blackColor),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              "Welcome to Macromend",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: AppColor.hintColor, fontSize: 14.0),
-            )
-          ],
-        ),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(top: 3.0, bottom: 3.0, right: 15.0),
-            padding: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-                color: AppColor.shadowColor, shape: BoxShape.circle),
-            child: Stack(
-              alignment: Alignment.topRight,
+    return BaseView<DashboardViewModel>(
+      prepareModel: (model) {
+        this.model = model;
+        model.getUserData();
+      },
+      builder: (context, model, child) {
+        return Scaffold(
+          backgroundColor: AppColor.backgroundColor,
+          appBar: AppBar(
+            backgroundColor: AppColor.backgroundColor,
+            elevation: 0.0,
+            automaticallyImplyLeading: false,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  "assets/images/notification_icon.png",
-                  height: 30.0,
-                  width: 30.0,
-                  color: AppColor.hintColor,
+                Text(
+                  "Hi, varun",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20.0,
+                      color: AppColor.blackColor),
                 ),
-                Container(
-                  margin: EdgeInsets.all(2.0),
-                  height: 10.0,
-                  width: 10.0,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: AppColor.redColor),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Text(
+                  "Welcome to Macromend",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: AppColor.hintColor, fontSize: 14.0),
                 )
               ],
             ),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .02,
-            ),
-            checkInWidget(),
-            SizedBox(
-              height: 15.0,
-            ),
-            Text(
-              "Actions",
-              style: TextStyle(
-                  color: AppColor.blackColor,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            InkResponse(
-              radius: 5.0,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => LeaveListScreen(),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+            actions: [
+              Container(
+                margin: EdgeInsets.only(top: 3.0, bottom: 3.0, right: 15.0),
+                padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  border: Border.all(color: AppColor.disableColor),
-                ),
-                child: Row(
+                    color: AppColor.shadowColor, shape: BoxShape.circle),
+                child: Stack(
+                  alignment: Alignment.topRight,
                   children: [
+                    Image.asset(
+                      "assets/images/notification_icon.png",
+                      height: 30.0,
+                      width: 30.0,
+                      color: AppColor.hintColor,
+                    ),
                     Container(
-                      padding: EdgeInsets.all(10.0),
+                      margin: EdgeInsets.all(2.0),
+                      height: 10.0,
+                      width: 10.0,
                       decoration: BoxDecoration(
-                          color: AppColor.shadowColor, shape: BoxShape.circle),
-                      child: Image.asset(
-                        "assets/images/leave_icon.png",
-                        height: 30.0,
-                        width: 30.0,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15.0,
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Leaves",
-                                  style: TextStyle(
-                                      color: AppColor.blackColor,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18.0),
-                                ),
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                                Text(
-                                  "Manage leaves and request",
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Icon(Icons.arrow_forward_ios_rounded)
-                        ],
-                      ),
+                          shape: BoxShape.circle, color: AppColor.redColor),
                     )
                   ],
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            InkResponse(
-              radius: 5.0,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => PermissionListScreen(),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  border: Border.all(color: AppColor.disableColor),
+              )
+            ],
+          ),
+          body: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * .02,
                 ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                          color: AppColor.shadowColor, shape: BoxShape.circle),
-                      child: Image.asset(
-                        "assets/images/permission_icon.png",
-                        height: 30.0,
-                        width: 30.0,
+                checkInWidget(),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Text(
+                  "Actions",
+                  style: TextStyle(
+                      color: AppColor.blackColor,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w700),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                InkResponse(
+                  radius: 5.0,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => LeaveListScreen(),
                       ),
+                    );
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      border: Border.all(color: AppColor.disableColor),
                     ),
-                    SizedBox(
-                      width: 15.0,
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Permission",
-                                  style: TextStyle(
-                                      color: AppColor.blackColor,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18.0),
-                                ),
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                                Text(
-                                  "Manage permission and request",
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                              ],
-                            ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              color: AppColor.shadowColor,
+                              shape: BoxShape.circle),
+                          child: Image.asset(
+                            "assets/images/leave_icon.png",
+                            height: 30.0,
+                            width: 30.0,
                           ),
-                          Icon(Icons.arrow_forward_ios_rounded)
-                        ],
-                      ),
-                    )
-                  ],
+                        ),
+                        SizedBox(
+                          width: 15.0,
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Leaves",
+                                      style: TextStyle(
+                                          color: AppColor.blackColor,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18.0),
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text(
+                                      "Manage leaves and request",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(Icons.arrow_forward_ios_rounded)
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            /*Container(
+                SizedBox(
+                  height: 15.0,
+                ),
+                InkResponse(
+                  radius: 5.0,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => PermissionListScreen(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      border: Border.all(color: AppColor.disableColor),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              color: AppColor.shadowColor,
+                              shape: BoxShape.circle),
+                          child: Image.asset(
+                            "assets/images/permission_icon.png",
+                            height: 30.0,
+                            width: 30.0,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15.0,
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Permission",
+                                      style: TextStyle(
+                                          color: AppColor.blackColor,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18.0),
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text(
+                                      "Manage permission and request",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(Icons.arrow_forward_ios_rounded)
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                /*Container(
               padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
@@ -288,16 +301,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
             )*/
-          ],
-        ),
-      ),
-      /*bottomNavigationBar: Container(
+              ],
+            ),
+          ),
+          /*bottomNavigationBar: Container(
         child: Row(
           children: [
 
           ],
         ),
       ),*/
+        );
+      },
     );
   }
 

@@ -74,7 +74,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   InkResponse(
                     radius: 5.0,
                     onTap: () async {
-                      await model.googleSignIn();
+                      if (model.state != ViewState.inActive) {
+                        await model.googleSignIn();
+                      }
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 15.0),
@@ -146,6 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           TextFormField(
             controller: mailCtrl,
+            enabled: model!.state != ViewState.inActive,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Mail id is required";
@@ -169,6 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
           TextFormField(
             controller: pwdCtrl,
             obscureText: isHide,
+            enabled: model!.state != ViewState.inActive,
             style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 20.0,
@@ -208,31 +212,30 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             height: 25.0,
           ),
-          InkResponse(
-            radius: 5.0,
-            onTap: () {
-              // validateInputs();
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => OtpScreen(),
-              ));
-            },
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              decoration: BoxDecoration(
-                color: AppColor.primaryColor,
-                borderRadius: BorderRadius.circular(35.0),
-              ),
-              child: Text(
-                "Sign In",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18.0,
-                    color: AppColor.whiteColor),
-              ),
-            ),
-          ),
+          model!.state == ViewState.inActive
+              ? CircularProgressIndicator()
+              : InkResponse(
+                  radius: 5.0,
+                  onTap: () {
+                    validateInputs();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 20.0),
+                    decoration: BoxDecoration(
+                      color: AppColor.primaryColor,
+                      borderRadius: BorderRadius.circular(35.0),
+                    ),
+                    child: Text(
+                      "Sign In",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18.0,
+                          color: AppColor.whiteColor),
+                    ),
+                  ),
+                ),
         ],
       ),
     );
@@ -241,7 +244,20 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> validateInputs() async {
     FocusScope.of(context).unfocus();
     if (loginKey.currentState!.validate()) {
-      await model!.userAuth(email: mailCtrl.text, password: pwdCtrl.text);
+      await model!
+          .userAuth(
+              email: mailCtrl.text, password: pwdCtrl.text, context: context)
+          .then(
+        (value) {
+          if (value) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => OtpScreen(model: model, uid: model!.uid),
+              ),
+            );
+          }
+        },
+      );
     }
   }
 }

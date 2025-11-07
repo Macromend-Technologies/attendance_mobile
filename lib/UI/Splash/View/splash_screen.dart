@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:macro_attendance_app/Constant/app_color.dart';
+import 'package:macro_attendance_app/Constant/app_strings.dart';
 import 'package:macro_attendance_app/Core/application_base.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -10,8 +11,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  SharedPreferences? prefs;
+
   @override
   void initState() {
+    prefs = spEngine!.prefs;
     startNavigate();
     super.initState();
   }
@@ -45,8 +49,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigatePage() {
+    prefs = spEngine!.prefs;
+    bool isLog =
+        prefs == null ? false : prefs!.getBool(AppStrings.isLogin) ?? false;
     Navigator.of(context).pushNamedAndRemoveUntil(
-      "/LoginScreen",
+      isLog ? "/Dashboard" : "/LoginScreen",
       (route) => true,
     );
   }
