@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "532778887749",
+    "firebase_url": "https://attendance-96bc0-default-rtdb.firebaseio.com",
     "project_id": "attendance-96bc0",
     "storage_bucket": "attendance-96bc0.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.macromend.macro_attendance_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "532778887749-li1nej43mk3gevo5q8mqmkqmc9elvq39.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.macromend.macro_attendance_app",
+            "certificate_hash": "0bf759402661b40a68fead0af6b5e1b74e1bf4aa"
+          }
+        },
+        {
+          "client_id": "532778887749-rbg4b63984ku2bvoa8pprknfg6av3h9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD6qCU_OlNrQbhLBS2KzAqVn583bMLK1h4"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532778887749-rbg4b63984ku2bvoa8pprknfg6av3h9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

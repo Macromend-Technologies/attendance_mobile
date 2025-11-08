@@ -12,10 +12,10 @@ class UserDetailsResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['email'] = this.email;
-    data['name'] = this.name;
-    data['phone'] = this.phone;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['email'] = email;
+    data['name'] = name;
+    data['phone'] = phone;
     return data;
   }
 }

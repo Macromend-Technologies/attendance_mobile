@@ -1,7 +1,9 @@
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:macro_attendance_app/Constant/app_color.dart';
 import 'package:macro_attendance_app/Constant/app_strings.dart';
 import 'package:macro_attendance_app/Core/application_base.dart';
+import 'package:macro_attendance_app/UI/Location/View/location_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -48,12 +50,18 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void navigatePage() {
+  Future<void> navigatePage() async {
     prefs = spEngine!.prefs;
     bool isLog =
         prefs == null ? false : prefs!.getBool(AppStrings.isLogin) ?? false;
+    LocationPermission permission = await Geolocator.checkPermission();
+    bool isLocation = permission == LocationPermission.denied;
     Navigator.of(context).pushNamedAndRemoveUntil(
-      isLog ? "/Dashboard" : "/LoginScreen",
+      isLocation
+          ? "/Location"
+          : isLog
+              ? "/Dashboard"
+              : "/LoginScreen",
       (route) => true,
     );
   }
