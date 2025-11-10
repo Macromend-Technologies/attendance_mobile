@@ -131,7 +131,10 @@ class FireStoreFunctions {
       {required String uId,
       required bool isCheckIn,
       required String time,
-      required String location}) async {
+      required String location,
+      required int radius,
+      required double officeLat,
+      required double officeLong}) async {
     final now = DateTime.now();
     String date = DateFormat('dd-MM-yyyy').format(now);
     bool result = false;
@@ -143,9 +146,9 @@ class FireStoreFunctions {
       if (await isWithinOfficeArea(
           currentLat: double.parse(parts[0]),
           currentLong: double.parse(parts[1]),
-          officeLat: 11.6875445,
-          officeLng: 78.150803,
-          radiusInMeters: 5)) {
+          officeLat: officeLat,
+          officeLng: officeLong,
+          radiusInMeters: radius)) {
         DocumentReference<Map<String, dynamic>> db = fireStore!
             .collection('Attendance')
             .doc(year)
@@ -187,7 +190,7 @@ class FireStoreFunctions {
     required double currentLong,
     required double officeLat,
     required double officeLng,
-    double radiusInMeters = 100, // adjust radius as needed
+    int radiusInMeters = 100, // adjust radius as needed
   }) async {
     final distance = Geolocator.distanceBetween(
       currentLat,

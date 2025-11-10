@@ -3,6 +3,7 @@ import 'package:macro_attendance_app/Constant/app_strings.dart';
 import 'package:macro_attendance_app/Core/application_base.dart';
 import 'package:macro_attendance_app/Firebase/Functions/firestore_functions.dart';
 import 'package:macro_attendance_app/UI/Dashboard/Model/dashboard_response_model.dart';
+import 'package:macro_attendance_app/UI/Dashboard/Model/location_response_model.dart';
 
 class DashboardViewModel extends BaseModel {
   SharedPreferences? preferences;
@@ -10,6 +11,7 @@ class DashboardViewModel extends BaseModel {
   UserDetails? user;
   String latitude = "";
   String longitude = "";
+  List<Locations> locations = [];
 
   Future<void> getUserData() async {
     super.setState(ViewState.inActive);
@@ -36,7 +38,13 @@ class DashboardViewModel extends BaseModel {
     try {
       await FireStoreFunctions().getLocations().then(
         (value) {
-          debugPrint(value.toList().toString());
+          LocationResponseModel entity =
+              LocationResponseModel.fromJson({"locations": value});
+          if (entity.locations!.isNotEmpty) {
+            locations = entity.locations ?? [];
+          } else {
+            throw "No locations are found contact your HR or manager";
+          }
         },
       );
     } catch (e) {
@@ -45,7 +53,11 @@ class DashboardViewModel extends BaseModel {
   }
 
   Future<void> makeAttendance(
-      {required bool isCheckIn, required String time}) async {
+      {required bool isCheckIn,
+      required String time,
+      required double officeLat,
+      required double officeLong,
+      required int radius}) async {
     super.setState(ViewState.busy);
     preferences = spEngine!.prefs;
     try {
@@ -57,7 +69,10 @@ class DashboardViewModel extends BaseModel {
                 uId: uId,
                 isCheckIn: isCheckIn,
                 time: time,
-                location: "$latitude,$longitude")
+                location: "$latitude,$longitude",
+                officeLat: officeLat,
+                officeLong: officeLong,
+                radius: radius)
             .then(
           (value) {
             if (value) {

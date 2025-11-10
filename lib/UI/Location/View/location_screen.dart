@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:macro_attendance_app/Constant/app_color.dart';
+import 'package:macro_attendance_app/Constant/app_strings.dart';
 import 'package:macro_attendance_app/Core/application_base.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -11,6 +12,14 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  SharedPreferences? prefs;
+
+  @override
+  void initState() {
+    prefs = spEngine!.prefs;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,22 +101,25 @@ class _LocationScreenState extends State<LocationScreen> {
         LocationPermission per = await Geolocator.requestPermission();
         if (per == LocationPermission.always ||
             per == LocationPermission.whileInUse) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/Dashboard",
-            (route) => true,
-          );
+          navigate();
         }
-        // if()
       } else if (permission == LocationPermission.deniedForever) {
         await Geolocator.openAppSettings();
       } else if (permission == LocationPermission.whileInUse) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/Dashboard",
-          (route) => true,
-        );
+        navigate();
       }
     } else {
       Geolocator.openLocationSettings();
     }
+  }
+
+  navigate() {
+    prefs = spEngine!.prefs;
+    bool isLog =
+        prefs == null ? false : prefs!.getBool(AppStrings.isLogin) ?? false;
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      isLog ? "/Dashboard" : "/LoginScreen",
+      (route) => true,
+    );
   }
 }

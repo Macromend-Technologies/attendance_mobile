@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:macro_attendance_app/Constant/app_color.dart';
+import 'package:macro_attendance_app/Constant/app_strings.dart';
 import 'package:macro_attendance_app/Core/application_base.dart';
 import 'package:macro_attendance_app/UI/Dashboard/ViewModel/dashboard_view_model.dart';
 import 'package:macro_attendance_app/UI/Leave/View/leave_list_screen.dart';
@@ -14,6 +15,17 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   DashboardViewModel? model;
+  SharedPreferences? prefs;
+  String location = "";
+  double lat = 0.00, lon = 0.00;
+  int radius = 0;
+
+  @override
+  void initState() {
+    prefs = spEngine!.prefs;
+    getAttendanceLocation();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -444,7 +456,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             height: 8.0,
           ),
           Text(
-            "Position",
+            "Attendance Location",
             style: TextStyle(
                 color: AppColor.hintColor, fontWeight: FontWeight.w400),
           ),
@@ -452,8 +464,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             height: 5.0,
           ),
           Text(
-            // "Senior Mobile Application Developer",
-            model!.user!.name ?? "",
+            location,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -468,40 +479,79 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ? Visibility(
                   visible: model!.attendance!.checkIn!.isEmpty ||
                       model!.attendance!.checkOut!.isEmpty,
-                  child: InkResponse(
-                    radius: 5.0,
-                    onTap: () async {
-                      await model!.makeAttendance(
-                        isCheckIn: model!.attendance!.checkIn == "",
-                        time: DateFormat('hh:mm a').format(DateTime.now()),
-                      );
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 18.0),
-                      decoration: BoxDecoration(
-                        color: model!.attendance!.checkIn == ""
-                            ? AppColor.primaryColor
-                            : AppColor.redColor,
-                        borderRadius: BorderRadius.circular(35.0),
+                  child: Column(
+                    children: [
+                      InkResponse(
+                        radius: 5.0,
+                        onTap: () async {
+                          if (model!.attendance!.checkIn!.isEmpty) {
+                            if (model!.locations.isNotEmpty) {
+                              if (model!.locations.length > 1) {
+                                chooseLocationSheet(context);
+                              } else {
+                                setState(() {
+                                  location = model!.locations[0].name ?? "";
+                                  lat = model!.locations[0].latitude ?? 0.00;
+                                  lon = model!.locations[0].longitude ?? 0.00;
+                                  radius = model!.locations[0].radius ?? 0;
+                                });
+                                await prefs!.setString(
+                                    AppStrings.lastUpdateDate,
+                                    DateFormat("dd-MM-yyyy")
+                                        .format(DateTime.now()));
+                                await model!.makeAttendance(
+                                    isCheckIn: true,
+                                    time: DateFormat('hh:mm a')
+                                        .format(DateTime.now()),
+                                    officeLong:
+                                        model!.locations[0].longitude ?? 0.00,
+                                    officeLat:
+                                        model!.locations[0].latitude ?? 0.00,
+                                    radius: model!.locations[0].radius ?? 0);
+                              }
+                            } else {
+                              dialogueEngine!.showDialogueBox(
+                                  msg:
+                                      "No locations are found contact your HR or manager");
+                            }
+                          } else {
+                            await model!.makeAttendance(
+                                isCheckIn: false,
+                                time: DateFormat('hh:mm a')
+                                    .format(DateTime.now()),
+                                officeLong: lon,
+                                officeLat: lat,
+                                radius: radius);
+                          }
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 18.0),
+                          decoration: BoxDecoration(
+                            color: model!.attendance!.checkIn == ""
+                                ? AppColor.primaryColor
+                                : AppColor.redColor,
+                            borderRadius: BorderRadius.circular(35.0),
+                          ),
+                          child: Text(
+                            model!.attendance!.checkIn == ""
+                                ? "Check In"
+                                : "Check Out",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: AppColor.whiteColor,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 18.0),
+                          ),
+                        ),
                       ),
-                      child: Text(
-                        model!.attendance!.checkIn == ""
-                            ? "Check In"
-                            : "Check Out",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: AppColor.whiteColor,
-                            fontWeight: FontWeight.w800,
-                            fontSize: 18.0),
+                      SizedBox(
+                        height: 15.0,
                       ),
-                    ),
+                    ],
                   ),
                 )
               : Center(child: CircularProgressIndicator()),
-          SizedBox(
-            height: 15.0,
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -521,5 +571,160 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
     );
+  }
+
+  void chooseLocationSheet(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15.0),
+          topRight: Radius.circular(15.0),
+        ),
+      ),
+      isDismissible: false,
+      context: context,
+      builder: (context) {
+        return PopScope(
+          canPop: false,
+          child: Container(
+            height: MediaQuery.of(context).size.height / 2,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15.0),
+                topRight: Radius.circular(15.0),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Choose Location",
+                        style: TextStyle(
+                            color: AppColor.blackColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20.0),
+                      ),
+                      InkResponse(
+                        radius: 5.0,
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(
+                              color: AppColor.redColor, shape: BoxShape.circle),
+                          child: Icon(
+                            Icons.clear,
+                            color: AppColor.whiteColor,
+                            size: 20.0,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Divider(
+                  height: 0.0,
+                  thickness: 1.5,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: model!.locations.length,
+                    itemBuilder: (context, index) {
+                      return InkResponse(
+                        radius: 5.0,
+                        onTap: () async {
+                          Navigator.of(context).pop();
+                          await prefs!.setString(AppStrings.attendanceLocation,
+                              model!.locations[index].name ?? "");
+                          await prefs!.setDouble(AppStrings.attendanceLat,
+                              model!.locations[index].latitude ?? 0.00);
+                          await prefs!.setDouble(AppStrings.attendanceLog,
+                              model!.locations[index].longitude ?? 0.00);
+                          await prefs!.setInt(AppStrings.attendanceRad,
+                              model!.locations[index].radius ?? 0);
+                          await prefs!.setString(AppStrings.lastUpdateDate,
+                              DateFormat("dd-MM-yyyy").format(DateTime.now()));
+                          setState(() {
+                            setState(() {
+                              location = prefs!.getString(
+                                      AppStrings.attendanceLocation) ??
+                                  "";
+                              lat =
+                                  prefs!.getDouble(AppStrings.attendanceLat) ??
+                                      0.00;
+                              lon =
+                                  prefs!.getDouble(AppStrings.attendanceLog) ??
+                                      0.00;
+                              radius =
+                                  prefs!.getInt(AppStrings.attendanceRad) ?? 0;
+                            });
+                          });
+
+                          await model!.makeAttendance(
+                              isCheckIn: true,
+                              time:
+                                  DateFormat('hh:mm a').format(DateTime.now()),
+                              officeLong:
+                                  model!.locations[index].longitude ?? 0.00,
+                              officeLat:
+                                  model!.locations[index].latitude ?? 0.00,
+                              radius: model!.locations[index].radius ?? 0);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 15.0),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  color: AppColor.greyColor, width: 0.5),
+                            ),
+                          ),
+                          child: Text(
+                            model!.locations[index].name ?? "",
+                            style: TextStyle(
+                                color: Colors.deepOrange,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> getAttendanceLocation() async {
+    if (prefs != null) {
+      prefs = spEngine!.prefs;
+      String lastUpdate = prefs!.getString(AppStrings.lastUpdateDate) ?? "";
+      String today = DateFormat('dd-MM-yyyy').format(DateTime.now());
+      if (today == lastUpdate) {
+        String attLoc = prefs!.getString(AppStrings.attendanceLocation) ?? "";
+        double attLat = prefs!.getDouble(AppStrings.attendanceLat) ?? 0.00;
+        double attLon = prefs!.getDouble(AppStrings.attendanceLog) ?? 0.00;
+        int attRad = prefs!.getInt(AppStrings.attendanceRad) ?? 0;
+        setState(() {
+          location = attLoc;
+          lat = attLat;
+          lon = attLon;
+          radius = attRad;
+        });
+      }
+    }
   }
 }
