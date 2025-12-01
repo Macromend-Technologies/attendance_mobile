@@ -2,6 +2,7 @@ import 'package:macro_attendance_app/Constant/app_strings.dart';
 import 'package:macro_attendance_app/Core/application_base.dart';
 import 'package:macro_attendance_app/UI/Dashboard/View/dashboard_screen.dart';
 import 'package:macro_attendance_app/UI/Dashboard/ViewModel/dashboard_view_model.dart';
+import 'package:macro_attendance_app/UI/Leave/ViewModel/leave_view_model.dart';
 import 'package:macro_attendance_app/UI/Location/View/location_screen.dart';
 import 'package:macro_attendance_app/UI/Login/View/login_screen.dart';
 import 'package:macro_attendance_app/UI/Login/View/otp_screen.dart';
@@ -28,7 +29,7 @@ class ApplicationCore extends AppBase {
     locator.registerFactory(() => RegisterViewModel());
     locator.registerFactory(() => LoginViewModel());
     locator.registerFactory(() => DashboardViewModel());
-    // locator.registerFactory(() => ViceDisplayViewModel());
+    locator.registerFactory(() => LeaveViewModel());
     // locator.registerFactory(() => ReportViewModel());
   }
 }

@@ -230,4 +230,21 @@ class FireStoreFunctions {
     }
     return locations;
   }
+
+  Future<List<String>> getLeaveTypes() async {
+    fireStore = FirebaseFirestore.instance;
+    List<String> leaves = [];
+    try {
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await fireStore!.collection('Common').doc('Leaves').get();
+      if (snapshot.exists) {
+        leaves = List<String>.from(snapshot.data()!['leave_types']);
+      }
+    } on FirebaseException catch (e) {
+      throw e.message ?? "";
+    } catch (e) {
+      throw e.toString();
+    }
+    return leaves;
+  }
 }
